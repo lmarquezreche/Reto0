@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de errores</title>
+</head>
+
+<body>
+
+    <h1>Prueba de errores</h1>
+
+    <p>En esta pagina se pueden probar dos errores diferentes.</p>
+
+    <h2>1. Error de codigo</h2>
+    <p>Pulsa el boton para lanzar un error.</p>
+    <button id="errorCodigo">Lanzar error</button>
+
+    <h2>2. Error por opcion incorrecta</h2>
+    <p>Selecciona una opcion:</p>
+
+    <select id="opcion">
+        <option value="">Selecciona una opcion</option>
+        <option value="consultar">Consultar informacion</option>
+        <option value="guardar">Guardar informacion</option>
+        <option value="incorrecta">Opcion incorrecta</option>
+    </select>
+
+    <button id="comprobarOpcion">Comprobar</button>
+
+    <h2>Mensaje</h2>
+    <div id="mensaje">Aqui apareceran los mensajes.</div>
+
+    <script>
+        const mensaje = document.getElementById("mensaje");
+
+        // Primer error: error creado desde el codigo.
+        document.getElementById("errorCodigo").addEventListener("click", function () {
+            try {
+                throw new Error("Error de prueba generado desde el codigo.");
+            } catch (error) {
+                console.error("ERROR 1 - Error de codigo:", error);
+                mensaje.textContent = "Ha ocurrido un error interno. Vuelve a intentarlo.";
+            }
+        });
+
+        // Segundo error: el usuario selecciona una opcion incorrecta.
+        document.getElementById("comprobarOpcion").addEventListener("click", function () {
+            try {
+                const opcion = document.getElementById("opcion").value;
+
+                if (opcion === "") {
+                    throw new Error("No has seleccionado ninguna opcion.");
+                }
+
+                if (opcion === "incorrecta") {
+                    throw new Error("La opcion no es correcta. Selecciona otra.");
+                }
+
+                mensaje.textContent = "La opcion es correcta.";
+                console.log("Opcion correcta:", opcion);
+            } catch (error) {
+                console.error("ERROR 2 - Opcion incorrecta:", error.message);
+                mensaje.textContent = "Error: " + error.message;
+            }
+        });
+    </script>
+
+</body>
+</html>
