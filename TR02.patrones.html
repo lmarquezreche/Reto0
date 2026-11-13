@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mini calculadora</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <h1>Prueba de patrones</h1>
+
+  <form>
+    <label for="fnumero">Primer número:</label><br>
+    <input type="number" id="fnumero" placeholder="Escribe el primer número" step="any" required>
+    <br><br>
+
+    <label for="snumero">Segundo número:</label><br>
+    <input type="number" id="snumero" placeholder="Escribe el segundo número" step="any" required>
+    <br><br>
+
+    <button type="button" onclick="calcular('suma')">Sumar</button>
+    <button type="button" onclick="calcular('resta')">Restar</button>
+    <button type="button" onclick="calcular('multiplicacion')">Multiplicar</button>
+    <button type="button" onclick="calcular('division')">Dividir</button>
+  </form>
+
+  <p id="resultado"></p>
+
+  <script>
+    const patron = /^\s*(-?\d+(?:\.\d+)?)\s*([+\-*/%])\s*(-?\d+(?:\.\d+)?)\s*$/;
+
+    function calcular(operacion) {
+      const primerNumero = document.getElementById("fnumero").value;
+      const segundoNumero = document.getElementById("snumero").value;
+
+      if (primerNumero === "" || segundoNumero === "") {
+        document.getElementById("resultado").textContent = "Introduce los dos números.";
+        return;
+      }
+
+      let signo;
+
+      if (operacion === "suma") {
+        signo = "+";
+      } else if (operacion === "resta") {
+        signo = "-";
+      } else if (operacion === "multiplicacion") {
+        signo = "*";
+      } else if (operacion === "division") {
+        signo = "/";
+      }
+
+      const expresion = primerNumero + " " + signo + " " + segundoNumero;
+      const partes = expresion.match(patron);
+
+      if (partes === null) {
+        document.getElementById("resultado").textContent = "La operación no es válida.";
+        return;
+      }
+
+      const numero1 = parseFloat(partes[1]);
+      const operador = partes[2];
+      const numero2 = parseFloat(partes[3]);
+      let resultado;
+
+      if (operador === "+") {
+        resultado = numero1 + numero2;
+      } else if (operador === "-") {
+        resultado = numero1 - numero2;
+      } else if (operador === "*") {
+        resultado = numero1 * numero2;
+      } else if (operador === "/") {
+        if (numero2 === 0) {
+          document.getElementById("resultado").textContent = "No se puede dividir entre cero.";
+          return;
+        }
+        resultado = numero1 / numero2;
+      }
+
+      document.getElementById("resultado").textContent = "Resultado: " + resultado;
+    }
+  </script>
+</body>
+</html>
